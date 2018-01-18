@@ -91,6 +91,7 @@ survey_header = {
     u"required_message": u"bind::jr:requiredMsg",
     u"required message": u"bind::jr:requiredMsg",
     u"body": u"control",
+    u"parameters": u"parameters",
     # PMA2020 BEGIN
     u"save_form": u"bind::saveForm",
     u"save_instance": u"bind::saveInstance",

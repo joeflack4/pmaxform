@@ -7,7 +7,7 @@ from errors import PyXFormError
 from section import RepeatingSection, GroupedSection
 from survey import Survey
 from question import Question, InputQuestion, TriggerQuestion, \
-    UploadQuestion, MultipleChoiceQuestion, OsmUploadQuestion
+    UploadQuestion, MultipleChoiceQuestion, OsmUploadQuestion, RangeQuestion
 from question_type_dictionary import QUESTION_TYPE_DICT
 from xls2json import SurveyReader
 
@@ -45,6 +45,7 @@ class SurveyElementBuilder(object):
         u"select1": MultipleChoiceQuestion,
         u"upload": UploadQuestion,
         u"osm": OsmUploadQuestion,
+        u"range": RangeQuestion,
         }
 
     SECTION_CLASSES = {

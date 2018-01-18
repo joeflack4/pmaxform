@@ -240,6 +240,59 @@ def add_flat_annotations(prompt_list, parent_relevant='', name_prefix=''):
             #    prompt['name'] = name_prefix + prompt['name']
 
 
+def process_range_question_type(row):
+    """Returns a new row that includes the Range parameters start, end and
+    step.
+    Raises PyXFormError when invalid range parameters are used.
+    """
+    def _parameters(parameters):
+        parts = parameters.split(';')
+        if len(parts) == 1:
+            parts = parameters.split(',')
+        if len(parts) == 1:
+            parts = parameters.split()
+
+        return parts
+
+    new_dict = row.copy()
+    parameters = _parameters(new_dict.get('parameters', ''))
+    parameters_map = {'start': 'start', 'end': 'end', 'step': 'step'}
+    defaults = {'start': '1', 'end': '10', 'step': '1'}
+    params = {}
+
+    for param in parameters:
+        if '=' not in param:
+            raise PyXFormError("Expecting parameters to be in the form of "
+                               "'start=X end=X step=X'.")
+        k, v = param.split('=')[:2]
+        key = parameters_map.get(k.lower().strip())
+        if key:
+            params[key] = v.strip()
+        else:
+            raise PyXFormError(
+                "Range has the parameters 'start', 'end' and"
+                " 'step': '%s' is an invalid parameter." % k)
+
+    # set defaults
+    for key in parameters_map.values():
+        if key not in params:
+            params[key] = defaults[key]
+
+    try:
+        has_float = any(
+            [float(x) and '.' in str(x) for x in params.values()])
+    except ValueError:
+        raise PyXFormError("Range parameters 'start', "
+                           "'end' or 'step' must all be numbers.")
+    else:
+        # is integer by default, convert to decimal if it has any float values
+        if has_float:
+            new_dict['bind'] = new_dict.get('bind', {})
+            new_dict['bind'].update({'type': 'decimal'})
+    new_dict['parameters'] = params
+    return new_dict
+
+
 def workbook_to_json(
         workbook_dict, form_name=None,
         default_language=u"default", warnings=None):
@@ -788,6 +841,12 @@ def workbook_to_json(
 
             parent_children_array.append(new_dict)
 
+            continue
+
+        # range question_type
+        if question_type == 'range':
+            new_dict = process_range_question_type(row)
+            parent_children_array.append(new_dict)
             continue
 
         # TODO: Consider adding some question_type validation here.

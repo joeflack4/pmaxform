@@ -868,6 +868,19 @@ QUESTION_TYPE_DICT = \
                 "type": "binary"
             }
         },
+        "range": {
+            "control": {
+                "tag": "range"
+            },
+            "bind": {
+                "type": "int"
+            }
+        },
+        "audit": {
+            "bind": {
+                "type": "binary"
+            }
+        },
         # PMA2020 Logging BEGIN
         "hidden attachment": {
             "bind": {

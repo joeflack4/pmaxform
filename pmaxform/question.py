@@ -233,3 +233,25 @@ class OsmUploadQuestion(UploadQuestion):
             result.appendChild(osm_tag.xml())
 
         return result
+
+
+class RangeQuestion(Question):
+    """
+    This control string is the same for: strings, integers, decimals,
+    dates, geopoints, barcodes ...
+    """
+    def xml_control(self):
+        control_dict = self.control
+        label_and_hint = self.xml_label_and_hint()
+        survey = self.get_root()
+        # Resolve field references in attributes
+        for key, value in control_dict.items():
+            control_dict[key] = survey.insert_xpaths(value)
+        control_dict['ref'] = self.get_xpath()
+        params = self.get('parameters', {})
+        control_dict.update(params)
+        result = node(**control_dict)
+        if label_and_hint:
+            for element in self.xml_label_and_hint():
+                result.appendChild(element)
+        return result
