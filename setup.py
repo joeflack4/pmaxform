@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='pmaxform',
-    version='1.0.3',
+    version='1.0.4',
     author='James K. Pringle',
     author_email='jpringle@jhu.edu',
     packages=['pmaxform', 'pmaxform.odk_validate'],
@@ -17,6 +17,6 @@ setup(
     long_description=open('README.rst', 'rt').read(),
     install_requires=[
         'xlrd==0.8.0',
-        'lxml==3.4.4',
+        'lxml==4.3.0',
     ],
 )

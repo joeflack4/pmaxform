@@ -41,3 +41,4 @@ v1.0.1, 2016 04 26 -- Initial pmaxform release
     -- Accept xml_root in settings to fix the XForm root.
 v1.0.2, 2016 08 23 -- External choices UTF-8 support
 v1.0.3, 2018 01 25 -- Support for range widget
+v1.0.4, 2019 01 23 -- Upgrade dependency lxml 3.x --> 4.3.0
